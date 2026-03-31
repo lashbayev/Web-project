@@ -1,5 +1,7 @@
-#Web-Project
-##Project description
+# Web-Project
+
+
+## Project description
 This project is a web application designed to help students find internships, pet-projects, and teams to collaborate with.
 
 The application will allow users to:
@@ -12,7 +14,7 @@ The application will allow users to:
 
 The goal of the project is to provide a simple and accessible platform that helps students gain real experience, grow their skills, and find like-minded peers.
 
-## Group members
+### Group members
 
 - [Lashbayev Nurbek](https://github.com/lashbayev)
 - [Saparali Nurkhat](https://github.com/NurkhatSaparali)
