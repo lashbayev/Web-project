@@ -18,3 +18,4 @@ The goal of the project is to provide a simple and accessible platform that help
 
 - [Lashbayev Nurbek](https://github.com/lashbayev)
 - [Saparali Nurkhat](https://github.com/NurkhatSaparali)
+- [Sahybek Eldos](https://github.com/Eldos0619)
