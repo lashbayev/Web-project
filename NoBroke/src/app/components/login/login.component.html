@@ -1,12 +1,30 @@
-<div class="login">
-  <h2>Login</h2>
+<section class="login-layout">
+  <article class="login-copy">
+    <p class="kicker">Welcome back</p>
+    <h2>Sign in and move straight to active projects.</h2>
+    <p>
+      Your workspace is now styled as a real product: cleaner hierarchy, better
+      spacing, and a clearer entry point for users.
+    </p>
+  </article>
 
-  <input [(ngModel)]="email" placeholder="Email">
-  <input [(ngModel)]="password" type="password" placeholder="Password">
+  <article class="login-panel">
+    <h3>Login</h3>
 
-  <button (click)="login()">Login</button>
+    <label>
+      <span>Email</span>
+      <input [(ngModel)]="email" placeholder="you@example.com">
+    </label>
 
-  @if (error) {
-    <p class="error">{{ error }}</p>
-  }
-</div>
+    <label>
+      <span>Password</span>
+      <input [(ngModel)]="password" type="password" placeholder="Enter password">
+    </label>
+
+    <button (click)="login()">Open workspace</button>
+
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+  </article>
+</section>

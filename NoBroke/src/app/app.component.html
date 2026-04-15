@@ -1,7 +1,30 @@
-<nav>
-  <a routerLink="/login">Login</a>
-  <a routerLink="/projects">Projects</a>
-  <a routerLink="/profile">Profile</a>
-</nav>
+<div class="shell">
+  <header class="topbar">
+    <a class="brand" routerLink="/login">
+      <span class="brand-mark">NB</span>
+      <span class="brand-copy">
+        <strong>NoBroke</strong>
+        <small>Freelance workspace</small>
+      </span>
+    </a>
 
-<router-outlet></router-outlet>
+    <nav class="nav">
+      <a routerLink="/login" routerLinkActive="is-active">Login</a>
+      <a routerLink="/projects" routerLinkActive="is-active">Projects</a>
+      <a routerLink="/profile" routerLinkActive="is-active">Profile</a>
+    </nav>
+  </header>
+
+  <main class="page-frame">
+    <section class="hero-card">
+      <p class="eyebrow">Build. Apply. Grow.</p>
+      <h1>Turn the prototype into a product people can actually use.</h1>
+      <p class="hero-copy">
+        Clean navigation, structured forms, and a brighter visual system for the
+        whole app.
+      </p>
+    </section>
+
+    <router-outlet></router-outlet>
+  </main>
+</div>

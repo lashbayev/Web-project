@@ -1,4 +1,88 @@
-input {
+.profile-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.profile-editor,
+.profile-preview {
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.section-label {
+  margin: 0 0 8px;
+  color: var(--accent-strong);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+h2 {
+  margin: 0 0 22px;
+  font-size: 2rem;
+  line-height: 1.05;
+}
+
+label {
   display: block;
-  margin: 10px 0;
+  margin-bottom: 16px;
+}
+
+label span,
+.preview-item span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+}
+
+input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid rgba(176, 215, 255, 0.16);
+  border-radius: 16px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+  outline: none;
+}
+
+input:focus {
+  border-color: rgba(85, 230, 193, 0.65);
+  box-shadow: 0 0 0 4px rgba(85, 230, 193, 0.12);
+}
+
+.profile-preview {
+  background:
+    radial-gradient(circle at top right, rgba(123, 198, 255, 0.16), transparent 34%),
+    var(--panel-strong);
+}
+
+.preview-item {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.preview-item:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.preview-item p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-editor,
+  .profile-preview {
+    padding: 22px;
+  }
 }

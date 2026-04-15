@@ -1,24 +1,57 @@
-<h2>Projects</h2>
+<section class="projects-layout">
+  <aside class="project-form">
+    <p class="section-label">Create project</p>
+    <h2>Publish a brief that looks worth applying to.</h2>
 
-<input [(ngModel)]="title" placeholder="Title">
-<input [(ngModel)]="description" placeholder="Description">
-<input [(ngModel)]="tech_stack" placeholder="Tech stack">
+    <label>
+      <span>Title</span>
+      <input [(ngModel)]="title" placeholder="Frontend redesign for marketplace">
+    </label>
 
-<button (click)="createProject()">Create</button>
+    <label>
+      <span>Description</span>
+      <input [(ngModel)]="description" placeholder="Need Angular UI cleanup and API integration">
+    </label>
 
-@if (projects.length > 0) {
-  @for (p of projects; track p.id) {
-    <div class="card">
-      <h3>{{ p.title }}</h3>
-      <p>{{ p.description }}</p>
-      <p>{{ p.tech_stack }}</p>
-      <button (click)="apply(p.id)">Apply</button>
+    <label>
+      <span>Tech stack</span>
+      <input [(ngModel)]="tech_stack" placeholder="Angular, Django, PostgreSQL">
+    </label>
+
+    <button (click)="createProject()">Create project</button>
+
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+  </aside>
+
+  <section class="project-feed">
+    <div class="feed-heading">
+      <p class="section-label">Live board</p>
+      <h2>Open projects</h2>
     </div>
-  }
-} @else {
-  <p>No projects</p>
-}
 
-@if (error) {
-  <p>{{ error }}</p>
-}
+    @if (projects.length > 0) {
+      <div class="cards">
+        @for (p of projects; track p.id) {
+          <article class="card">
+            <div class="card-top">
+              <span class="badge">Project #{{ p.id }}</span>
+              <h3>{{ p.title }}</h3>
+            </div>
+
+            <p class="description">{{ p.description }}</p>
+            <p class="stack">{{ p.tech_stack }}</p>
+
+            <button (click)="apply(p.id)">Apply now</button>
+          </article>
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <h3>No projects yet</h3>
+        <p>Create the first card and the board will appear here.</p>
+      </div>
+    }
+  </section>
+</section>

@@ -1,8 +1,46 @@
-body {
-  font-family: Arial;
-  margin: 20px;
+:root {
+  --bg: #08141f;
+  --bg-soft: #102233;
+  --panel: rgba(10, 23, 36, 0.78);
+  --panel-strong: rgba(14, 31, 48, 0.92);
+  --line: rgba(176, 215, 255, 0.14);
+  --text: #eff7ff;
+  --muted: #9db7cf;
+  --accent: #55e6c1;
+  --accent-strong: #ffb84d;
+  --danger: #ff8f8f;
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
 }
 
-nav a {
-  margin-right: 10px;
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(85, 230, 193, 0.16), transparent 28%),
+    radial-gradient(circle at top right, rgba(255, 184, 77, 0.18), transparent 24%),
+    linear-gradient(160deg, #06101a 0%, #0a1b2a 52%, #08141f 100%);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
