@@ -1,0 +1,24 @@
+<h2>Projects</h2>
+
+<input [(ngModel)]="title" placeholder="Title">
+<input [(ngModel)]="description" placeholder="Description">
+<input [(ngModel)]="tech_stack" placeholder="Tech stack">
+
+<button (click)="createProject()">Create</button>
+
+@if (projects.length > 0) {
+  @for (p of projects; track p.id) {
+    <div class="card">
+      <h3>{{ p.title }}</h3>
+      <p>{{ p.description }}</p>
+      <p>{{ p.tech_stack }}</p>
+      <button (click)="apply(p.id)">Apply</button>
+    </div>
+  }
+} @else {
+  <p>No projects</p>
+}
+
+@if (error) {
+  <p>{{ error }}</p>
+}
