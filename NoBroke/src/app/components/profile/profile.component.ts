@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { User } from '../../models/user';
@@ -10,7 +10,7 @@ import { User } from '../../models/user';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   skills = '';
   github = '';
   message = '';
@@ -20,6 +20,22 @@ export class ProfileComponent {
     const user = this.api.getCurrentUser();
     this.skills = user?.skills ?? '';
     this.github = user?.github ?? '';
+  }
+
+  ngOnInit(): void {
+    if (!this.currentUser) {
+      return;
+    }
+
+    this.api.getProfile().subscribe({
+      next: (user) => {
+        this.skills = user.skills;
+        this.github = user.github;
+      },
+      error: (err: Error) => {
+        this.error = err.message || 'Failed to load profile.';
+      }
+    });
   }
 
   get currentUser(): User | null {
@@ -39,18 +55,18 @@ export class ProfileComponent {
       return;
     }
 
-    const updated = this.api.updateProfile({
+    this.api.updateProfile({
       skills: this.skills,
       github: this.github
+    }).subscribe({
+      next: (updated) => {
+        this.skills = updated.skills;
+        this.github = updated.github;
+        this.message = 'Profile updated.';
+      },
+      error: (err: Error) => {
+        this.error = err.message || 'Failed to update profile.';
+      }
     });
-
-    if (!updated) {
-      this.error = 'Please login first.';
-      return;
-    }
-
-    this.skills = updated.skills;
-    this.github = updated.github;
-    this.message = 'Profile updated.';
   }
 }

@@ -1,8 +1,8 @@
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Project } from '../models/project';
 import { User } from '../models/user';
 
@@ -16,193 +16,74 @@ type ApplicationRecord = {
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private readonly useMock = true;
   private readonly tokenKey = 'nb_token';
   private readonly userKey = 'nb_user';
-  private readonly projectsKey = 'nb_projects';
-  private readonly applicationsKey = 'nb_applications';
-  private readonly baseUrl = 'http://localhost:8000/api';
-  private readonly demoDelay = 250;
+  private readonly baseUrl = 'http://127.0.0.1:8000/api';
 
   constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: object
-  ) {
-    this.seedMockData();
-  }
+  ) {}
 
   login(data: { email: string; password: string; role?: 'student' | 'employer' }): Observable<{ token: string; user: User }> {
-    if (!this.useMock) {
-      return this.http.post<{ token: string; user: User }>(`${this.baseUrl}/login/`, data);
-    }
-
-    const email = data.email.trim().toLowerCase();
-    const password = data.password.trim();
-
-    if (!email || !password) {
-      return throwError(() => new Error('Please enter email and password.'));
-    }
-
-    const requestedRole = data.role ?? (email.includes('employer') ? 'employer' : 'student');
-    let user: User | null = null;
-
-    if (requestedRole === 'student') {
-      user = {
-        id: 1,
-        email,
-        role: 'student',
-        skills: 'Angular, TypeScript, UX Writing',
-        github: 'https://github.com/student-demo'
-      };
-    } else if (requestedRole === 'employer') {
-      user = {
-        id: 2,
-        email,
-        role: 'employer',
-        skills: 'Hiring, Product Strategy, Team Building',
-        github: 'https://github.com/employer-demo'
-      };
-    }
-
-    if (!user || password.length < 4) {
-      return throwError(() => new Error('Enter any email and a password with at least 4 characters.'));
-    }
-
-    const token = `mock-jwt-token-${user.role}`;
-    this.writeStorage(this.tokenKey, token);
-    this.writeStorage(this.userKey, JSON.stringify(user));
-
-    return of({ token, user }).pipe(delay(this.demoDelay));
+    return this.http.post<{ token: string; user: User }>(`${this.baseUrl}/login/`, data).pipe(
+      tap(({ token, user }) => {
+        this.writeStorage(this.tokenKey, token);
+        this.writeStorage(this.userKey, JSON.stringify(user));
+      }),
+      catchError((error) => this.handleError(error))
+    );
   }
 
   getProjects(): Observable<Project[]> {
-    if (!this.useMock) {
-      return this.http.get<Project[]>(`${this.baseUrl}/projects/`);
-    }
-
-    return of(this.readProjects()).pipe(delay(this.demoDelay));
+    return this.http.get<Project[]>(`${this.baseUrl}/projects/`).pipe(
+      catchError((error) => this.handleError(error))
+    );
   }
 
   createProject(project: Pick<Project, 'title' | 'description' | 'tech_stack'>): Observable<Project> {
-    if (!this.useMock) {
-      return this.http.post<Project>(`${this.baseUrl}/projects/`, project);
-    }
-
-    const user = this.getCurrentUser();
-
-    if (!user || user.role !== 'employer') {
-      return throwError(() => new Error('Only employers can create projects.'));
-    }
-
-    if (!project.title.trim() || !project.description.trim() || !project.tech_stack.trim()) {
-      return throwError(() => new Error('Fill in title, description, and tech stack.'));
-    }
-
-    const projects = this.readProjects();
-    const newProject: Project = {
-      id: Date.now(),
-      title: project.title.trim(),
-      description: project.description.trim(),
-      tech_stack: project.tech_stack.trim()
-    };
-
-    this.writeStorage(this.projectsKey, JSON.stringify([newProject, ...projects]));
-    return of(newProject).pipe(delay(this.demoDelay));
+    return this.http.post<Project>(`${this.baseUrl}/projects/`, project).pipe(
+      catchError((error) => this.handleError(error))
+    );
   }
 
   deleteProject(projectId: number): Observable<{ success: boolean }> {
-    if (!this.useMock) {
-      return this.http.delete<{ success: boolean }>(`${this.baseUrl}/projects/${projectId}/`);
-    }
-
-    const user = this.getCurrentUser();
-
-    if (!user || user.role !== 'employer') {
-      return throwError(() => new Error('Only employers can delete projects.'));
-    }
-
-    const projects = this.readProjects();
-    const projectExists = projects.some((project) => project.id === projectId);
-
-    if (!projectExists) {
-      return throwError(() => new Error('Project not found.'));
-    }
-
-    const updatedProjects = projects.filter((project) => project.id !== projectId);
-    const updatedApplications = this.readApplications().filter((item) => item.projectId !== projectId);
-
-    this.writeStorage(this.projectsKey, JSON.stringify(updatedProjects));
-    this.writeStorage(this.applicationsKey, JSON.stringify(updatedApplications));
-
-    return of({ success: true }).pipe(delay(this.demoDelay));
+    return this.http.delete<{ success: boolean }>(`${this.baseUrl}/projects/${projectId}/`).pipe(
+      catchError((error) => this.handleError(error))
+    );
   }
 
-  applyToProject(projectId: number): Observable<{ success: boolean }> {
-    if (!this.useMock) {
-      return this.http.post<{ success: boolean }>(`${this.baseUrl}/applications/`, { project: projectId });
-    }
-
-    const user = this.getCurrentUser();
-
-    if (!user || user.role !== 'student') {
-      return throwError(() => new Error('Only students can apply to projects.'));
-    }
-
-    const applications = this.readApplications();
-    const alreadyApplied = applications.some((item) => item.projectId === projectId && item.userId === user.id);
-
-    if (alreadyApplied) {
-      return throwError(() => new Error('You already applied to this project.'));
-    }
-
-    applications.unshift({
-      id: Date.now(),
-      projectId,
-      userId: user.id,
-      userEmail: user.email,
-      status: 'pending'
-    });
-    this.writeStorage(this.applicationsKey, JSON.stringify(applications));
-
-    return of({ success: true }).pipe(delay(this.demoDelay));
+  applyToProject(projectId: number): Observable<ApplicationRecord> {
+    return this.http.post<ApplicationRecord>(`${this.baseUrl}/applications/`, { project: projectId }).pipe(
+      catchError((error) => this.handleError(error))
+    );
   }
 
   updateApplicationStatus(
     applicationId: number,
     status: 'accepted' | 'rejected'
-  ): Observable<{ success: boolean }> {
-    if (!this.useMock) {
-      return this.http.patch<{ success: boolean }>(
-        `${this.baseUrl}/applications/${applicationId}/`,
-        { status }
-      );
-    }
-
-    const user = this.getCurrentUser();
-
-    if (!user || user.role !== 'employer') {
-      return throwError(() => new Error('Only employers can manage applications.'));
-    }
-
-    const applications = this.readApplications();
-    const index = applications.findIndex((item) => item.id === applicationId);
-
-    if (index === -1) {
-      return throwError(() => new Error('Application not found.'));
-    }
-
-    applications[index] = {
-      ...applications[index],
-      status
-    };
-
-    this.writeStorage(this.applicationsKey, JSON.stringify(applications));
-    return of({ success: true }).pipe(delay(this.demoDelay));
+  ): Observable<ApplicationRecord> {
+    return this.http.patch<ApplicationRecord>(
+      `${this.baseUrl}/applications/${applicationId}/`,
+      { status }
+    ).pipe(
+      catchError((error) => this.handleError(error))
+    );
   }
 
-  logout(): void {
-    this.removeStorage(this.tokenKey);
-    this.removeStorage(this.userKey);
+  logout(): Observable<{ success: boolean }> {
+    if (!this.getToken()) {
+      this.clearSession();
+      return of({ success: true });
+    }
+
+    return this.http.post<{ success: boolean }>(`${this.baseUrl}/logout/`, {}).pipe(
+      tap(() => this.clearSession()),
+      catchError(() => {
+        this.clearSession();
+        return of({ success: true });
+      })
+    );
   }
 
   getCurrentUser(): User | null {
@@ -210,77 +91,34 @@ export class ApiService {
     return raw ? JSON.parse(raw) as User : null;
   }
 
-  updateProfile(patch: Pick<User, 'skills' | 'github'>): User | null {
-    const user = this.getCurrentUser();
-    if (!user) {
-      return null;
-    }
-
-    const updatedUser: User = {
-      ...user,
-      skills: patch.skills.trim(),
-      github: patch.github.trim()
-    };
-
-    this.writeStorage(this.userKey, JSON.stringify(updatedUser));
-    return updatedUser;
+  getProfile(): Observable<User> {
+    return this.http.get<{ user: User }>(`${this.baseUrl}/profile/`).pipe(
+      map((response) => response.user),
+      tap((user) => this.writeStorage(this.userKey, JSON.stringify(user))),
+      catchError((error) => this.handleError(error))
+    );
   }
 
-  getApplications(): ApplicationRecord[] {
-    return this.readApplications();
+  updateProfile(patch: Pick<User, 'skills' | 'github'>): Observable<User> {
+    return this.http.patch<{ user: User }>(`${this.baseUrl}/profile/`, patch).pipe(
+      map((response) => response.user),
+      tap((user) => this.writeStorage(this.userKey, JSON.stringify(user))),
+      catchError((error) => this.handleError(error))
+    );
   }
 
-  private seedMockData(): void {
-    if (!this.isBrowser()) {
-      return;
-    }
-
-    if (!this.readStorage(this.projectsKey)) {
-      this.writeStorage(this.projectsKey, JSON.stringify([
-        {
-          id: 101,
-          title: 'Frontend Internship for EdTech Product',
-          description: 'Build responsive Angular pages, improve student dashboard flows, and ship features with a mentor.',
-          tech_stack: 'Angular, TypeScript, SCSS'
-        },
-        {
-          id: 102,
-          title: 'Pet-project Team: AI Study Planner',
-          description: 'Join a student team building an MVP that recommends study plans and tracks learning habits.',
-          tech_stack: 'Angular, Firebase, Python'
-        },
-        {
-          id: 103,
-          title: 'Startup Internship: Product Analytics UI',
-          description: 'Create clean reporting screens and reusable components for a young analytics platform.',
-          tech_stack: 'Angular, RxJS, Node.js'
-        },
-        {
-          id: 104,
-          title: 'Remote Team for Open Source Career Hub',
-          description: 'Work on project cards, candidate profiles, and collaboration features for junior talent.',
-          tech_stack: 'Angular, NestJS, PostgreSQL'
-        }
-      ]));
-    }
-
-    if (!this.readStorage(this.applicationsKey)) {
-      this.writeStorage(this.applicationsKey, JSON.stringify([]));
-    }
-  }
-
-  private readProjects(): Project[] {
-    const raw = this.readStorage(this.projectsKey);
-    return raw ? JSON.parse(raw) as Project[] : [];
-  }
-
-  private readApplications(): ApplicationRecord[] {
-    const raw = this.readStorage(this.applicationsKey);
-    return raw ? JSON.parse(raw) as ApplicationRecord[] : [];
+  getApplications(): Observable<ApplicationRecord[]> {
+    return this.http.get<ApplicationRecord[]>(`${this.baseUrl}/applications/`).pipe(
+      catchError((error) => this.handleError(error))
+    );
   }
 
   private isBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
+  }
+
+  private getToken(): string | null {
+    return this.readStorage(this.tokenKey);
   }
 
   private readStorage(key: string): string | null {
@@ -297,5 +135,37 @@ export class ApiService {
     if (this.isBrowser()) {
       localStorage.removeItem(key);
     }
+  }
+
+  private clearSession(): void {
+    this.removeStorage(this.tokenKey);
+    this.removeStorage(this.userKey);
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let message = 'Something went wrong. Please try again.';
+
+    if (error.error) {
+      if (typeof error.error === 'string') {
+        message = error.error;
+      } else if (typeof error.error.detail === 'string') {
+        message = error.error.detail;
+      } else if (typeof error.error.password?.[0] === 'string') {
+        message = error.error.password[0];
+      } else if (typeof error.error.non_field_errors?.[0] === 'string') {
+        message = error.error.non_field_errors[0];
+      } else {
+        const firstValue = Object.values(error.error)[0];
+        if (Array.isArray(firstValue) && typeof firstValue[0] === 'string') {
+          message = firstValue[0];
+        }
+      }
+    }
+
+    if (error.status === 0) {
+      message = 'Cannot connect to the server. Make sure the Django backend is running on port 8000.';
+    }
+
+    return throwError(() => new Error(message));
   }
 }

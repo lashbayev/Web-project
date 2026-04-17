@@ -22,7 +22,10 @@ export class AppComponent {
   }
 
   logout(): void {
-    this.api.logout();
-    this.router.navigate(['/login']);
+    this.api.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }

@@ -86,7 +86,19 @@ export class ProjectsComponent implements OnInit {
   }
 
   loadApplications(): void {
-    this.applications = this.api.getApplications();
+    if (!this.currentUser) {
+      this.applications = [];
+      return;
+    }
+
+    this.api.getApplications().subscribe({
+      next: (data) => {
+        this.applications = data;
+      },
+      error: (err: Error) => {
+        this.error = err.message || 'Failed to load applications.';
+      }
+    });
   }
 
   applyFilters(): void {

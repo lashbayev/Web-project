@@ -1,0 +1,289 @@
+{
+  "info": {
+    "name": "NoBroke API",
+    "_postman_id": "7d4504fd-2198-4ec9-a31b-a9fcfaecf53f",
+    "description": "Postman collection for the NoBroke Django + DRF backend.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "projectId",
+      "value": "1"
+    },
+    {
+      "key": "applicationId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth - Login Student",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"student@example.com\",\n  \"password\": \"pass1234\",\n  \"role\": \"student\"\n}"
+        },
+        "url": "{{baseUrl}}/login/"
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"token\": \"2d677e2a15fef4example\",\n  \"user\": {\n    \"id\": 1,\n    \"email\": \"student@example.com\",\n    \"role\": \"student\",\n    \"skills\": \"Angular, TypeScript\",\n    \"github\": \"https://github.com/student-demo\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Auth - Login Employer",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"employer@example.com\",\n  \"password\": \"pass1234\",\n  \"role\": \"employer\"\n}"
+        },
+        "url": "{{baseUrl}}/login/"
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"token\": \"8ce09a16cfbdexample\",\n  \"user\": {\n    \"id\": 2,\n    \"email\": \"employer@example.com\",\n    \"role\": \"employer\",\n    \"skills\": \"\",\n    \"github\": \"\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Auth - Logout",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/logout/"
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"success\": true\n}"
+        }
+      ]
+    },
+    {
+      "name": "Projects - List",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/projects/"
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "status": "OK",
+          "code": 200,
+          "body": "[\n  {\n    \"id\": 1,\n    \"title\": \"Frontend Internship for EdTech Product\",\n    \"description\": \"Build responsive Angular pages.\",\n    \"tech_stack\": \"Angular, TypeScript, DRF\",\n    \"project_type\": \"internship\",\n    \"is_active\": true,\n    \"owner\": 2,\n    \"owner_email\": \"employer@example.com\",\n    \"created_at\": \"2026-04-17T18:00:00Z\",\n    \"updated_at\": \"2026-04-17T18:00:00Z\"\n  }\n]"
+        }
+      ]
+    },
+    {
+      "name": "Projects - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Startup Internship: Product Analytics UI\",\n  \"description\": \"Create reporting screens and reusable components.\",\n  \"tech_stack\": \"Angular, RxJS, Python\",\n  \"project_type\": \"internship\",\n  \"is_active\": true\n}"
+        },
+        "url": "{{baseUrl}}/projects/"
+      },
+      "response": [
+        {
+          "name": "201 Created",
+          "status": "Created",
+          "code": 201,
+          "body": "{\n  \"id\": 2,\n  \"title\": \"Startup Internship: Product Analytics UI\",\n  \"description\": \"Create reporting screens and reusable components.\",\n  \"tech_stack\": \"Angular, RxJS, Python\",\n  \"project_type\": \"internship\",\n  \"is_active\": true,\n  \"owner\": 2,\n  \"owner_email\": \"employer@example.com\",\n  \"created_at\": \"2026-04-17T18:03:00Z\",\n  \"updated_at\": \"2026-04-17T18:03:00Z\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Projects - Detail",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/projects/{{projectId}}/"
+      }
+    },
+    {
+      "name": "Projects - Update",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"tech_stack\": \"Angular, RxJS, Python, PostgreSQL\"\n}"
+        },
+        "url": "{{baseUrl}}/projects/{{projectId}}/"
+      }
+    },
+    {
+      "name": "Projects - Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/projects/{{projectId}}/"
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"success\": true\n}"
+        }
+      ]
+    },
+    {
+      "name": "Profile - Get",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/profile/"
+      }
+    },
+    {
+      "name": "Profile - Update",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"skills\": \"Angular, TypeScript, UX Writing\",\n  \"github\": \"https://github.com/student-demo\",\n  \"experience_level\": \"junior\"\n}"
+        },
+        "url": "{{baseUrl}}/profile/"
+      }
+    },
+    {
+      "name": "Applications - List",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/applications/"
+      }
+    },
+    {
+      "name": "Applications - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"project\": {{projectId}},\n  \"message\": \"I would love to contribute to this Angular project.\"\n}"
+        },
+        "url": "{{baseUrl}}/applications/"
+      },
+      "response": [
+        {
+          "name": "201 Created",
+          "status": "Created",
+          "code": 201,
+          "body": "{\n  \"id\": 1,\n  \"project\": 1,\n  \"projectId\": 1,\n  \"projectTitle\": \"Frontend Internship for EdTech Product\",\n  \"applicant\": 1,\n  \"userId\": 1,\n  \"userEmail\": \"student@example.com\",\n  \"message\": \"I would love to contribute to this Angular project.\",\n  \"status\": \"pending\",\n  \"created_at\": \"2026-04-17T18:05:00Z\",\n  \"updated_at\": \"2026-04-17T18:05:00Z\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Applications - Update Status",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"accepted\"\n}"
+        },
+        "url": "{{baseUrl}}/applications/{{applicationId}}/"
+      }
+    }
+  ]
+}
