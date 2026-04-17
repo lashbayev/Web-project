@@ -1,28 +1,51 @@
 <div class="shell">
   <header class="topbar">
-    <a class="brand" routerLink="/login">
+    <a class="brand" routerLink="/projects">
       <span class="brand-mark">NB</span>
       <span class="brand-copy">
         <strong>NoBroke</strong>
-        <small>Freelance workspace</small>
+        <small>Find internships, teams and pet-projects</small>
       </span>
     </a>
 
-    <nav class="nav">
+    <nav class="nav nav-main">
       <a routerLink="/login" routerLinkActive="is-active">Login</a>
       <a routerLink="/projects" routerLinkActive="is-active">Projects</a>
       <a routerLink="/profile" routerLinkActive="is-active">Profile</a>
     </nav>
+
+    <div class="topbar-actions">
+      <span class="role-badge">
+        @if (role === 'guest') {
+          Guest
+        } @else if (role === 'student') {
+          Student
+        } @else {
+          Employer
+        }
+      </span>
+
+      @if (currentUser) {
+        <button class="logout-btn" (click)="logout()">Logout</button>
+      } @else {
+        <a class="cta-link" routerLink="/login">Sign in</a>
+      }
+    </div>
   </header>
 
   <main class="page-frame">
     <section class="hero-card">
-      <p class="eyebrow">Build. Apply. Grow.</p>
-      <h1>Turn the prototype into a product people can actually use.</h1>
+      <p class="eyebrow">career marketplace for students</p>
+      <h1>HH-style internship platform for students, employers and project teams.</h1>
       <p class="hero-copy">
-        Clean navigation, structured forms, and a brighter visual system for the
-        whole app.
+        Search projects, apply as a student, publish opportunities as an employer,
+        and manage your profile in one clean product interface.
       </p>
+      <div class="hero-meta">
+        <span>Internships</span>
+        <span>Pet-projects</span>
+        <span>Startup teams</span>
+      </div>
     </section>
 
     <router-outlet></router-outlet>

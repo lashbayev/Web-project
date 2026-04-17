@@ -1,15 +1,26 @@
 <section class="login-layout">
-  <article class="login-copy">
-    <p class="kicker">Welcome back</p>
-    <h2>Sign in and move straight to active projects.</h2>
-    <p>
-      Your workspace is now styled as a real product: cleaner hierarchy, better
-      spacing, and a clearer entry point for users.
-    </p>
-  </article>
-
   <article class="login-panel">
     <h3>Login</h3>
+    <p class="panel-copy">Choose a role and sign in.</p>
+
+    <div class="role-switcher">
+      <button
+        type="button"
+        class="role-btn"
+        [class.active]="selectedRole === 'student'"
+        (click)="selectedRole = 'student'"
+      >
+        Student
+      </button>
+      <button
+        type="button"
+        class="role-btn"
+        [class.active]="selectedRole === 'employer'"
+        (click)="selectedRole = 'employer'"
+      >
+        Employer
+      </button>
+    </div>
 
     <label>
       <span>Email</span>
@@ -21,7 +32,11 @@
       <input [(ngModel)]="password" type="password" placeholder="Enter password">
     </label>
 
-    <button (click)="login()">Open workspace</button>
+    <p class="role-hint">
+      Current role: <strong>{{ selectedRole }}</strong>
+    </p>
+
+    <button (click)="login()">Sign in</button>
 
     @if (error) {
       <p class="error">{{ error }}</p>

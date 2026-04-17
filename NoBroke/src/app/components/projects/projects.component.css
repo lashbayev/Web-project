@@ -1,20 +1,31 @@
 .projects-layout {
   display: grid;
-  grid-template-columns: 360px minmax(0, 1fr);
+  grid-template-columns: 340px minmax(0, 1fr);
   gap: 24px;
 }
 
+.sidebar {
+  display: grid;
+  gap: 18px;
+}
+
+.search-panel,
 .project-form,
+.applications-panel,
+.info-panel,
 .project-feed,
 .card,
 .empty-state {
   border: 1px solid var(--line);
-  border-radius: 28px;
+  border-radius: 24px;
   background: var(--panel);
   box-shadow: var(--shadow);
 }
 
+.search-panel,
 .project-form,
+.applications-panel,
+.info-panel,
 .project-feed {
   padding: 28px;
 }
@@ -48,16 +59,16 @@ label span {
 input {
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid rgba(176, 215, 255, 0.16);
-  border-radius: 16px;
+  border: 1px solid rgba(19, 71, 164, 0.12);
+  border-radius: 14px;
   color: var(--text);
-  background: rgba(255, 255, 255, 0.04);
+  background: #f8fafe;
   outline: none;
 }
 
 input:focus {
-  border-color: rgba(85, 230, 193, 0.65);
-  box-shadow: 0 0 0 4px rgba(85, 230, 193, 0.12);
+  border-color: rgba(229, 57, 53, 0.45);
+  box-shadow: 0 0 0 4px rgba(229, 57, 53, 0.08);
 }
 
 button {
@@ -65,17 +76,31 @@ button {
   border: 0;
   border-radius: 14px;
   font-weight: 700;
-  color: #04131b;
-  background: linear-gradient(135deg, var(--accent), #7bc6ff);
+  color: #fff;
+  background: linear-gradient(135deg, #e53935, #ff6f61);
+}
+
+button[disabled] {
+  opacity: 0.65;
+  cursor: default;
 }
 
 .feed-heading {
   margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+}
+
+.results-count {
+  color: var(--muted);
+  font-size: 0.95rem;
 }
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 18px;
 }
 
@@ -84,6 +109,12 @@ button {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 60px rgba(18, 26, 43, 0.12);
 }
 
 .card-top h3 {
@@ -95,40 +126,148 @@ button {
   display: inline-block;
   padding: 6px 10px;
   border-radius: 999px;
-  color: var(--accent-strong);
-  background: rgba(255, 184, 77, 0.12);
+  color: #1c5fd4;
+  background: rgba(28, 95, 212, 0.08);
   font-size: 0.8rem;
 }
 
 .description,
 .stack,
 .empty-state p,
-.error {
+.message,
+.info-panel p {
   margin: 0;
   color: var(--muted);
   line-height: 1.6;
 }
 
 .stack {
-  color: var(--text);
+  color: #1f3150;
   opacity: 0.9;
 }
 
-.card button {
+.student-status {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #e2e8f0;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.student-status.accepted {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.student-status.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.card-actions {
   margin-top: auto;
+  display: flex;
+  align-items: center;
+}
+
+.card button {
+  width: 100%;
+}
+
+.applications-panel h3 {
+  margin: 0 0 14px;
+}
+
+.application-list {
+  display: grid;
+  gap: 12px;
+}
+
+.application-card {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.application-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.application-card p,
+.empty-copy {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.status-pill {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #334155;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+}
+
+.status-pill.accepted {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-pill.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.application-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.accept-btn {
+  background: #166534;
+}
+
+.reject-btn {
+  background: #b91c1c;
+}
+
+.delete-btn {
+  background: #b91c1c;
 }
 
 .empty-state {
   padding: 28px;
 }
 
-.empty-state h3 {
+.empty-state h3,
+.info-panel h3 {
   margin: 0 0 8px;
 }
 
+.message {
+  margin: 0 0 16px;
+}
+
 .error {
-  margin-top: 14px;
   color: var(--danger);
+}
+
+.success {
+  color: var(--success);
+}
+
+.helper-text {
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
 @media (max-width: 980px) {
@@ -136,7 +275,10 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .search-panel,
   .project-form,
+  .applications-panel,
+  .info-panel,
   .project-feed {
     padding: 22px;
   }

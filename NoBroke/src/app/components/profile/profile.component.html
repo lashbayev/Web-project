@@ -1,7 +1,13 @@
 <section class="profile-layout">
   <article class="profile-editor">
     <p class="section-label">Profile settings</p>
-    <h2>Shape the way clients see you.</h2>
+    <h2>Shape the way teams see you.</h2>
+
+    @if (role === 'guest') {
+      <p class="notice">Login as a student to edit your profile.</p>
+    } @else if (role === 'employer') {
+      <p class="notice">Employers can view this page, but editing is reserved for students.</p>
+    }
 
     <label>
       <span>Skills</span>
@@ -12,20 +18,15 @@
       <span>GitHub</span>
       <input [(ngModel)]="github" placeholder="https://github.com/username">
     </label>
-  </article>
 
-  <article class="profile-preview">
-    <p class="section-label">Preview</p>
-    <h2>Your public card</h2>
+    <button (click)="saveProfile()">Save profile</button>
 
-    <div class="preview-item">
-      <span>Skills</span>
-      <p>{{ skills || 'Add your strengths to make the profile useful.' }}</p>
-    </div>
+    @if (error) {
+      <p class="feedback error">{{ error }}</p>
+    }
 
-    <div class="preview-item">
-      <span>GitHub</span>
-      <p>{{ github || 'Link a repository profile to build trust.' }}</p>
-    </div>
+    @if (message) {
+      <p class="feedback success">{{ message }}</p>
+    }
   </article>
 </section>

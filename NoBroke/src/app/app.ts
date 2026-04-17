@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ApiService } from './services/api.service';
+import { User } from './models/user';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +10,19 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.css'
 })
-export class App {}
+export class App {
+  constructor(private api: ApiService, private router: Router) {}
+
+  get currentUser(): User | null {
+    return this.api.getCurrentUser();
+  }
+
+  get role(): User['role'] {
+    return this.currentUser?.role ?? 'guest';
+  }
+
+  logout(): void {
+    this.api.logout();
+    this.router.navigate(['/login']);
+  }
+}

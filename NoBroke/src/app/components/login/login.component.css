@@ -1,57 +1,48 @@
 .login-layout {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 24px;
+  width: 100%;
 }
 
-.login-copy,
 .login-panel {
+  width: 100%;
+  padding: 32px;
   border: 1px solid var(--line);
-  border-radius: 28px;
+  border-radius: 16px;
   background: var(--panel);
-  box-shadow: var(--shadow);
-}
-
-.login-copy {
-  padding: 36px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 420px;
-  background:
-    radial-gradient(circle at top right, rgba(255, 184, 77, 0.2), transparent 30%),
-    var(--panel);
-}
-
-.kicker {
-  margin: 0 0 10px;
-  color: var(--accent-strong);
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.login-copy h2 {
-  margin: 0 0 14px;
-  font-size: clamp(1.9rem, 4vw, 3.2rem);
-  line-height: 1;
-}
-
-.login-copy p:last-child {
-  margin: 0;
-  max-width: 500px;
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.login-panel {
-  padding: 30px;
+  box-shadow: none;
 }
 
 .login-panel h3 {
-  margin: 0 0 20px;
-  font-size: 1.5rem;
+  margin: 0 0 12px;
+  font-size: 2rem;
+}
+
+.panel-copy {
+  margin: 0 0 24px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.role-switcher {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.role-btn {
+  width: 100%;
+  margin-top: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #41506a;
+}
+
+.role-btn.active {
+  border-color: #cbd5e1;
+  background: #e2e8f0;
+  color: #0f172a;
 }
 
 label {
@@ -69,16 +60,16 @@ label span {
 input {
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid rgba(176, 215, 255, 0.16);
-  border-radius: 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
   color: var(--text);
-  background: rgba(255, 255, 255, 0.04);
+  background: #ffffff;
   outline: none;
 }
 
 input:focus {
-  border-color: rgba(85, 230, 193, 0.65);
-  box-shadow: 0 0 0 4px rgba(85, 230, 193, 0.12);
+  border-color: #94a3b8;
+  box-shadow: none;
 }
 
 button {
@@ -86,10 +77,16 @@ button {
   margin-top: 8px;
   padding: 14px 16px;
   border: 0;
-  border-radius: 16px;
-  font-weight: 700;
-  color: #04131b;
-  background: linear-gradient(135deg, var(--accent), #7bc6ff);
+  border-radius: 10px;
+  font-weight: 600;
+  color: #fff;
+  background: #0f172a;
+}
+
+.role-hint {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
 .error {
@@ -98,13 +95,7 @@ button {
 }
 
 @media (max-width: 860px) {
-  .login-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .login-copy,
   .login-panel {
     padding: 24px;
-    min-height: auto;
   }
 }

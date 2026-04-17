@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
+import { ApiService } from '../../services/api.service';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-login',
@@ -11,23 +12,27 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-
   email = '';
   password = '';
   error = '';
+  selectedRole: 'student' | 'employer' = 'student';
 
   constructor(private api: ApiService, private router: Router) {}
 
-  login() {
-    this.api.login({ email: this.email, password: this.password })
-      .subscribe({
-        next: (res) => {
-          localStorage.setItem('token', res.token);
-          this.router.navigate(['/projects']);
-        },
-        error: () => {
-          this.error = 'Login failed';
-        }
-      });
+  login(): void {
+    this.error = '';
+
+    this.api.login({
+      email: this.email,
+      password: this.password,
+      role: this.selectedRole
+    }).subscribe({
+      next: () => {
+        this.router.navigate(['/projects']);
+      },
+      error: (err: Error) => {
+        this.error = err.message || 'Login failed.';
+      }
+    });
   }
 }

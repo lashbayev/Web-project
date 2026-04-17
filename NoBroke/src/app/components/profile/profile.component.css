@@ -1,14 +1,13 @@
 .profile-layout {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
 }
 
-.profile-editor,
-.profile-preview {
+.profile-editor {
   padding: 28px;
   border: 1px solid var(--line);
-  border-radius: 28px;
+  border-radius: 24px;
   background: var(--panel);
   box-shadow: var(--shadow);
 }
@@ -33,8 +32,7 @@ label {
   margin-bottom: 16px;
 }
 
-label span,
-.preview-item span {
+label span {
   display: block;
   margin-bottom: 8px;
   color: var(--muted);
@@ -43,46 +41,44 @@ label span,
 input {
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid rgba(176, 215, 255, 0.16);
-  border-radius: 16px;
+  border: 1px solid rgba(19, 71, 164, 0.12);
+  border-radius: 14px;
   color: var(--text);
-  background: rgba(255, 255, 255, 0.04);
+  background: #f8fafe;
   outline: none;
 }
 
 input:focus {
-  border-color: rgba(85, 230, 193, 0.65);
-  box-shadow: 0 0 0 4px rgba(85, 230, 193, 0.12);
+  border-color: rgba(229, 57, 53, 0.45);
+  box-shadow: 0 0 0 4px rgba(229, 57, 53, 0.08);
 }
 
-.profile-preview {
-  background:
-    radial-gradient(circle at top right, rgba(123, 198, 255, 0.16), transparent 34%),
-    var(--panel-strong);
+button {
+  padding: 13px 18px;
+  border: 0;
+  border-radius: 14px;
+  color: #fff;
+  font-weight: 700;
+  background: linear-gradient(135deg, #e53935, #ff6f61);
 }
 
-.preview-item {
-  padding: 18px 0;
-  border-top: 1px solid var(--line);
+.notice,
+.feedback {
+  margin: 0 0 16px;
+  color: var(--muted);
+  line-height: 1.6;
 }
 
-.preview-item:first-of-type {
-  border-top: 0;
-  padding-top: 0;
+.error {
+  color: var(--danger);
 }
 
-.preview-item p {
-  margin: 0;
-  line-height: 1.7;
+.success {
+  color: var(--success);
 }
 
 @media (max-width: 900px) {
-  .profile-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .profile-editor,
-  .profile-preview {
+  .profile-editor {
     padding: 22px;
   }
 }

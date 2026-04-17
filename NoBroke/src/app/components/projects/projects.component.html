@@ -1,39 +1,116 @@
 <section class="projects-layout">
-  <aside class="project-form">
-    <p class="section-label">Create project</p>
-    <h2>Publish a brief that looks worth applying to.</h2>
+  <aside class="sidebar">
+    <section class="search-panel">
+      <p class="section-label">Search projects</p>
+      <h2>Internships and teams</h2>
 
-    <label>
-      <span>Title</span>
-      <input [(ngModel)]="title" placeholder="Frontend redesign for marketplace">
-    </label>
+      <label>
+        <span>Keyword</span>
+        <input [(ngModel)]="search" (ngModelChange)="applyFilters()" placeholder="Frontend, analytics, startup">
+      </label>
 
-    <label>
-      <span>Description</span>
-      <input [(ngModel)]="description" placeholder="Need Angular UI cleanup and API integration">
-    </label>
+      <label>
+        <span>Tech stack</span>
+        <input [(ngModel)]="techFilter" (ngModelChange)="applyFilters()" placeholder="Angular, Python, Node">
+      </label>
+    </section>
 
-    <label>
-      <span>Tech stack</span>
-      <input [(ngModel)]="tech_stack" placeholder="Angular, Django, PostgreSQL">
-    </label>
+    @if (isEmployer) {
+      <section class="project-form">
+        <p class="section-label">Create project</p>
+        <h2>Publish a role for students.</h2>
 
-    <button (click)="createProject()">Create project</button>
+        <label>
+          <span>Title</span>
+          <input [(ngModel)]="title" placeholder="Frontend internship for edu product">
+        </label>
 
-    @if (error) {
-      <p class="error">{{ error }}</p>
+        <label>
+          <span>Description</span>
+          <input [(ngModel)]="description" placeholder="Need Angular support for dashboard and landing pages">
+        </label>
+
+        <label>
+          <span>Tech stack</span>
+          <input [(ngModel)]="tech_stack" placeholder="Angular, TypeScript, REST API">
+        </label>
+
+        <button (click)="createProject()">Create Project</button>
+      </section>
+
+      <section class="applications-panel">
+        <p class="section-label">Student requests</p>
+        <h3>Review applications</h3>
+
+        @if (employerApplications.length > 0) {
+          <div class="application-list">
+            @for (application of employerApplications; track application.id) {
+              <article class="application-card">
+                <div class="application-head">
+                  <strong>{{ application.userEmail }}</strong>
+                  <span
+                    class="status-pill"
+                    [class.accepted]="application.status === 'accepted'"
+                    [class.rejected]="application.status === 'rejected'"
+                  >
+                    {{ application.status }}
+                  </span>
+                </div>
+
+                <p>{{ application.projectTitle }}</p>
+
+                @if (application.status === 'pending') {
+                  <div class="application-actions">
+                    <button class="accept-btn" (click)="updateApplicationStatus(application.id, 'accepted')">
+                      Accept
+                    </button>
+                    <button class="reject-btn" (click)="updateApplicationStatus(application.id, 'rejected')">
+                      Reject
+                    </button>
+                  </div>
+                }
+              </article>
+            }
+          </div>
+        } @else {
+          <p class="empty-copy">No student requests yet.</p>
+        }
+      </section>
+    } @else if (isStudent) {
+      <section class="info-panel">
+        <p class="section-label">Student mode</p>
+        <h3>You can apply to projects</h3>
+        <p>Update your profile, open interesting cards, and send applications directly from the list.</p>
+      </section>
+    } @else {
+      <section class="info-panel">
+        <p class="section-label">Guest mode</p>
+        <h3>Login to apply</h3>
+        <p>Guests can view the project feed, but only students can apply and only employers can create projects.</p>
+      </section>
     }
   </aside>
 
   <section class="project-feed">
     <div class="feed-heading">
-      <p class="section-label">Live board</p>
-      <h2>Open projects</h2>
+      <div>
+        <p class="section-label">Market feed</p>
+        <h2>Open projects</h2>
+      </div>
+      <span class="results-count">{{ filteredProjects.length }} results</span>
     </div>
 
-    @if (projects.length > 0) {
+    @if (error) {
+      <p class="message error">{{ error }}</p>
+    }
+
+    @if (success) {
+      <p class="message success">{{ success }}</p>
+    }
+
+    @if (filteredProjects.length > 0) {
       <div class="cards">
-        @for (p of projects; track p.id) {
+        @for (p of filteredProjects; track p.id) {
           <article class="card">
             <div class="card-top">
               <span class="badge">Project #{{ p.id }}</span>
@@ -43,14 +120,50 @@
             <p class="description">{{ p.description }}</p>
             <p class="stack">{{ p.tech_stack }}</p>
 
-            <button (click)="apply(p.id)">Apply now</button>
+            @if (isStudent && getStudentApplication(p.id); as application) {
+              <p
+                class="student-status"
+                [class.accepted]="application.status === 'accepted'"
+                [class.rejected]="application.status === 'rejected'"
+              >
+                @if (application.status === 'pending') {
+                  Your request is under review.
+                } @else if (application.status === 'accepted') {
+                  Your request was accepted.
+                } @else {
+                  Your request was rejected.
+                }
+              </p>
+            }
+
+            <div class="card-actions">
+              @if (isStudent) {
+                <button [disabled]="hasApplied(p.id)" (click)="apply(p.id)">
+                  @if (getStudentApplication(p.id); as application) {
+                    @if (application.status === 'pending') {
+                      Applied
+                    } @else if (application.status === 'accepted') {
+                      Accepted
+                    } @else {
+                      Rejected
+                    }
+                  } @else {
+                    Apply
+                  }
+                </button>
+              } @else if (isEmployer) {
+                <button class="delete-btn" (click)="deleteProject(p.id)">Delete project</button>
+              } @else {
+                <span class="helper-text">Login to apply</span>
+              }
+            </div>
           </article>
         }
       </div>
     } @else {
       <div class="empty-state">
-        <h3>No projects yet</h3>
-        <p>Create the first card and the board will appear here.</p>
+        <h3>No projects found</h3>
+        <p>Try another keyword or add a new project as an employer.</p>
       </div>
     }
   </section>

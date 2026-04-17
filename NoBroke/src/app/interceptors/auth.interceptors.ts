@@ -8,7 +8,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const token = isPlatformBrowser(this.platformId)
-      ? localStorage.getItem('token')
+      ? localStorage.getItem('nb_token')
       : null;
 
     if (token) {
