@@ -1,289 +1,735 @@
 {
   "info": {
+    "_postman_id": "3352e2b7-ac4c-498e-ac54-6a5f9dc75240",
     "name": "NoBroke API",
-    "_postman_id": "7d4504fd-2198-4ec9-a31b-a9fcfaecf53f",
-    "description": "Postman collection for the NoBroke Django + DRF backend.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53656925"
   },
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://127.0.0.1:8000/api"
-    },
-    {
-      "key": "token",
-      "value": ""
-    },
-    {
-      "key": "projectId",
-      "value": "1"
-    },
-    {
-      "key": "applicationId",
-      "value": "1"
-    }
-  ],
   "item": [
     {
-      "name": "Auth - Login Student",
+      "name": "Login Student",
       "request": {
         "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
+        "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"email\": \"student@example.com\",\n  \"password\": \"pass1234\",\n  \"role\": \"student\"\n}"
+          "raw": "{\r\n  \"email\": \"student@example.com\",\r\n  \"password\": \"pass1234\",\r\n  \"role\": \"student\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
-        "url": "{{baseUrl}}/login/"
-      },
-      "response": [
-        {
-          "name": "200 OK",
-          "status": "OK",
-          "code": 200,
-          "body": "{\n  \"token\": \"2d677e2a15fef4example\",\n  \"user\": {\n    \"id\": 1,\n    \"email\": \"student@example.com\",\n    \"role\": \"student\",\n    \"skills\": \"Angular, TypeScript\",\n    \"github\": \"https://github.com/student-demo\"\n  }\n}"
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/login/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "login",
+            ""
+          ]
         }
-      ]
+      },
+      "response": []
     },
     {
-      "name": "Auth - Login Employer",
+      "name": "200 OK - Login Student ",
       "request": {
+        "auth": {
+          "type": "noauth"
+        },
         "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
+        "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"email\": \"employer@example.com\",\n  \"password\": \"pass1234\",\n  \"role\": \"employer\"\n}"
+          "raw": "{\r\n  \"email\": \"student@example.com\",\r\n  \"password\": \"pass1234\",\r\n  \"role\": \"student\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
-        "url": "{{baseUrl}}/login/"
-      },
-      "response": [
-        {
-          "name": "200 OK",
-          "status": "OK",
-          "code": 200,
-          "body": "{\n  \"token\": \"8ce09a16cfbdexample\",\n  \"user\": {\n    \"id\": 2,\n    \"email\": \"employer@example.com\",\n    \"role\": \"employer\",\n    \"skills\": \"\",\n    \"github\": \"\"\n  }\n}"
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/login/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "login",
+            ""
+          ]
         }
-      ]
+      },
+      "response": []
     },
     {
-      "name": "Auth - Logout",
+      "name": "Login Employer",
       "request": {
         "method": "POST",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"employer@example.com\",\r\n  \"password\": \"pass1234\",\r\n  \"role\": \"employer\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
           }
-        ],
-        "url": "{{baseUrl}}/logout/"
-      },
-      "response": [
-        {
-          "name": "200 OK",
-          "status": "OK",
-          "code": 200,
-          "body": "{\n  \"success\": true\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/login/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "login",
+            ""
+          ]
         }
-      ]
+      },
+      "response": []
+    },
+    {
+      "name": "200 OK - Login Employer",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"employer@example.com\",\r\n  \"password\": \"pass1234\",\r\n  \"role\": \"employer\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/login/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "login",
+            ""
+          ]
+        }
+      },
+      "response": []
     },
     {
       "name": "Projects - List",
       "request": {
         "method": "GET",
-        "url": "{{baseUrl}}/projects/"
-      },
-      "response": [
-        {
-          "name": "200 OK",
-          "status": "OK",
-          "code": 200,
-          "body": "[\n  {\n    \"id\": 1,\n    \"title\": \"Frontend Internship for EdTech Product\",\n    \"description\": \"Build responsive Angular pages.\",\n    \"tech_stack\": \"Angular, TypeScript, DRF\",\n    \"project_type\": \"internship\",\n    \"is_active\": true,\n    \"owner\": 2,\n    \"owner_email\": \"employer@example.com\",\n    \"created_at\": \"2026-04-17T18:00:00Z\",\n    \"updated_at\": \"2026-04-17T18:00:00Z\"\n  }\n]"
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/projects/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "projects",
+            ""
+          ]
         }
-      ]
+      },
+      "response": []
+    },
+    {
+      "name": "200 OK - Projects List",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/projects/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "projects",
+            ""
+          ]
+        }
+      },
+      "response": []
     },
     {
       "name": "Projects - Create",
       "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "201 Created - Projects  Create ",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "1db99d2b51b53355de8819b3b386ab135fc07311",
+              "type": "string"
+            }
+          ]
+        },
         "method": "POST",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
-          },
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
+        "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"title\": \"Startup Internship: Product Analytics UI\",\n  \"description\": \"Create reporting screens and reusable components.\",\n  \"tech_stack\": \"Angular, RxJS, Python\",\n  \"project_type\": \"internship\",\n  \"is_active\": true\n}"
+          "raw": "{\r\n  \"title\": \"Startup Internship: Product Analytics UI\",\r\n  \"description\": \"Create reporting screens and reusable components.\",\r\n  \"tech_stack\": \"Angular, RxJS, Python\",\r\n  \"project_type\": \"internship\",\r\n  \"is_active\": true\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
-        "url": "{{baseUrl}}/projects/"
-      },
-      "response": [
-        {
-          "name": "201 Created",
-          "status": "Created",
-          "code": 201,
-          "body": "{\n  \"id\": 2,\n  \"title\": \"Startup Internship: Product Analytics UI\",\n  \"description\": \"Create reporting screens and reusable components.\",\n  \"tech_stack\": \"Angular, RxJS, Python\",\n  \"project_type\": \"internship\",\n  \"is_active\": true,\n  \"owner\": 2,\n  \"owner_email\": \"employer@example.com\",\n  \"created_at\": \"2026-04-17T18:03:00Z\",\n  \"updated_at\": \"2026-04-17T18:03:00Z\"\n}"
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/projects/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "projects",
+            ""
+          ]
         }
-      ]
+      },
+      "response": []
     },
     {
       "name": "Projects - Detail",
       "request": {
         "method": "GET",
-        "url": "{{baseUrl}}/projects/{{projectId}}/"
-      }
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "200 OK - Projects Detail",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/projects/1/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "projects",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
     },
     {
       "name": "Projects - Update",
       "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "200 OK - Projects Update",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "1db99d2b51b53355de8819b3b386ab135fc07311",
+              "type": "string"
+            }
+          ]
+        },
         "method": "PATCH",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
-          },
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
+        "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"tech_stack\": \"Angular, RxJS, Python, PostgreSQL\"\n}"
+          "raw": "{\r\n  \"tech_stack\": \"Angular, RxJS, Python, PostgreSQL\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
-        "url": "{{baseUrl}}/projects/{{projectId}}/"
-      }
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/projects/1/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "projects",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
     },
     {
       "name": "Projects - Delete",
       "request": {
-        "method": "DELETE",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
-          }
-        ],
-        "url": "{{baseUrl}}/projects/{{projectId}}/"
+        "method": "GET",
+        "header": []
       },
-      "response": [
-        {
-          "name": "200 OK",
-          "status": "OK",
-          "code": 200,
-          "body": "{\n  \"success\": true\n}"
+      "response": []
+    },
+    {
+      "name": "200 OK - Projects Delete",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "1db99d2b51b53355de8819b3b386ab135fc07311",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/projects/1/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "projects",
+            "1",
+            ""
+          ]
         }
-      ]
+      },
+      "response": []
     },
     {
       "name": "Profile - Get",
       "request": {
         "method": "GET",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
-          }
-        ],
-        "url": "{{baseUrl}}/profile/"
-      }
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "200 OK - Profile Get",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "1db99d2b51b53355de8819b3b386ab135fc07311",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/profile/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "profile",
+            ""
+          ]
+        }
+      },
+      "response": []
     },
     {
       "name": "Profile - Update",
       "request": {
-        "method": "PATCH",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
-          },
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"skills\": \"Angular, TypeScript, UX Writing\",\n  \"github\": \"https://github.com/student-demo\",\n  \"experience_level\": \"junior\"\n}"
-        },
-        "url": "{{baseUrl}}/profile/"
-      }
+        "method": "GET",
+        "header": []
+      },
+      "response": []
     },
     {
-      "name": "Applications - List",
+      "name": "200 OK - Profile Update",
       "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "3f4919ad7d94fc892453c575591f4459e216ade6",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"skills\": \"Angular, TypeScript, UX Writing\",\r\n  \"github\": \"https://github.com/student-demo\",\r\n  \"experience_level\": \"junior\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
           }
-        ],
-        "url": "{{baseUrl}}/applications/"
-      }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/profile/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "profile",
+            ""
+          ]
+        }
+      },
+      "response": []
     },
     {
       "name": "Applications - Create",
       "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "201 Created - Applications Create",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "3f4919ad7d94fc892453c575591f4459e216ade6",
+              "type": "string"
+            }
+          ]
+        },
         "method": "POST",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
-          },
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
+        "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"project\": {{projectId}},\n  \"message\": \"I would love to contribute to this Angular project.\"\n}"
+          "raw": "{\r\n  \"project\": 4,\r\n  \"message\": \"I would love to contribute to this Angular project.\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
-        "url": "{{baseUrl}}/applications/"
-      },
-      "response": [
-        {
-          "name": "201 Created",
-          "status": "Created",
-          "code": 201,
-          "body": "{\n  \"id\": 1,\n  \"project\": 1,\n  \"projectId\": 1,\n  \"projectTitle\": \"Frontend Internship for EdTech Product\",\n  \"applicant\": 1,\n  \"userId\": 1,\n  \"userEmail\": \"student@example.com\",\n  \"message\": \"I would love to contribute to this Angular project.\",\n  \"status\": \"pending\",\n  \"created_at\": \"2026-04-17T18:05:00Z\",\n  \"updated_at\": \"2026-04-17T18:05:00Z\"\n}"
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/applications/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "applications",
+            ""
+          ]
         }
-      ]
+      },
+      "response": []
+    },
+    {
+      "name": "Applications - List Student",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "200 OK - Applications List Student",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "3f4919ad7d94fc892453c575591f4459e216ade6",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/applications/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "applications",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Applications - List Employer",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "200 OK - Applications List Employer",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "1db99d2b51b53355de8819b3b386ab135fc07311",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/applications/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "applications",
+            ""
+          ]
+        }
+      },
+      "response": []
     },
     {
       "name": "Applications - Update Status",
       "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "200 OK - Applications Update Status",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "646b402b343b5d4fad0a609fafe00128e8d36cc1",
+              "type": "string"
+            }
+          ]
+        },
         "method": "PATCH",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
-          },
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
+        "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"status\": \"accepted\"\n}"
+          "raw": "{\r\n  \"status\": \"accepted\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
-        "url": "{{baseUrl}}/applications/{{applicationId}}/"
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/applications/1/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "applications",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "200 OK - Logout",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "646b402b343b5d4fad0a609fafe00128e8d36cc1",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/logout/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "logout",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
       }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "Variable",
+      "value": ""
+    },
+    {
+      "key": "Student token",
+      "value": ""
+    },
+    {
+      "key": "employer token",
+      "value": ""
     }
   ]
 }
